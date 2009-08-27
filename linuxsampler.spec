@@ -1,18 +1,23 @@
-%define	major	1
+%define	major	3
 %define	libname	%mklibname %name %major
+%define	develname %mklibname %name -d
 
 Name:          linuxsampler
 Summary:       Professional grade software audio sampler
-Version:       0.5.1
-Release:       %mkrel 3
+Version:       1.0.0
+Release:       %mkrel 1
 License:       GPL
 Group:	       Sound
 Source0:       %{name}-%{version}.tar.bz2
 URL: 	       http://www.linuxsampler.org/
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
-BuildRequires: libgig-devel
-BuildRequires: arts-devel
+BuildRequires: libgig-devel >= 3.3.0
+BuildRequires: libjack-devel
+BuildRequires: dssi-devel
+BuildRequires: sqlite3-devel
+BuildRequires: lv2core-devel
+#BuildRequires: arts-devel
 
 %description
 LinuxSampler is a professional grade software audio sampler 
@@ -22,8 +27,10 @@ hardware sampler devices
 %files
 %defattr(-,root,root)
 %_bindir/linuxsampler
-%_mandir/man1/linuxsampler.1.lzma
+%_mandir/man1/linuxsampler.1.*
 %_prefix/README.urpmi
+%_localstatedir/lib/%{name}/*.db
+%dir %_libdir/%{name}/plugins
 
 #--------------------------------------------------------------------
 
@@ -44,42 +51,42 @@ Librairies from %name
 
 %files -n %libname
 %defattr(-,root,root)
-%_libdir/linuxsampler/liblinuxsampler.so.1
-%_libdir/linuxsampler/liblinuxsampler.so.1.1.0
+%_libdir/linuxsampler/liblinuxsampler.so.%{major}*
 
 #--------------------------------------------------------------------
 
-%package -n	%libname-devel
+%package -n	%develname
 Group: 		Development/Other
 Summary: 	Libraries for %name
 Requires:	%libname = %version-%release
 Provides:	lib%name-devel = %version-%release
 Provides: 	%{name}-devel = %{version}-%{release}
+Obsoletes:	%{_lib}%{name}1-devel
 
-%description -n	%libname-devel
+%description -n	%develname
 Development libraries from %name
 
-%files -n %libname-devel
+%files -n %develname
 %defattr (-,root,root)
-%dir %_includedir/linuxsampler
-%_includedir/linuxsampler/*.h
-%dir %_includedir/linuxsampler/common
-%_includedir/linuxsampler/common/*.h
-%dir %_includedir/linuxsampler/drivers
-%_includedir/linuxsampler/drivers/*.h
-%dir %_includedir/linuxsampler/drivers/audio
-%_includedir/linuxsampler/drivers/audio/*.h
-%dir %_includedir/linuxsampler/drivers/midi
-%_includedir/linuxsampler/drivers/midi/*.h
-%dir %_includedir/linuxsampler/engines
-%_includedir/linuxsampler/engines/*.h
-%dir %_includedir/linuxsampler/plugins 
-%_includedir/linuxsampler/plugins/*.h
-%_libdir/pkgconfig/linuxsampler.pc
-%dir %_libdir/linuxsampler
-%_libdir/linuxsampler/liblinuxsampler.a
-%_libdir/linuxsampler/liblinuxsampler.la
-%_libdir/linuxsampler/liblinuxsampler.so
+%_includedir/%name/*.h
+%_includedir/%name/common/*.h
+%_includedir/%name/drivers/*.h
+%_includedir/%name/drivers/audio/*.h
+%_includedir/%name/drivers/midi/*.h
+%_includedir/%name/effects/*.h
+%_includedir/%name/engines/*.h
+%_includedir/%name/plugins/*.h
+%_libdir/pkgconfig/%name.pc
+%_libdir/dssi/*.a
+%_libdir/dssi/*.la
+%_libdir/dssi/*.so
+%_libdir/lv2/linuxsampler.lv2/*.a
+%_libdir/lv2/linuxsampler.lv2/*.la
+%_libdir/lv2/linuxsampler.lv2/*.so
+%_libdir/lv2/linuxsampler.lv2/*.ttl
+%_libdir/%name/liblinuxsampler.a
+%_libdir/%name/liblinuxsampler.la
+%_libdir/%name/liblinuxsampler.so
 
 #--------------------------------------------------------------------
 
@@ -87,10 +94,8 @@ Development libraries from %name
 %setup -q -n %name-%version
 
 %build
-%configure
-
-
-make
+%configure2_5x
+%make
 
 %install
 make DESTDIR=%buildroot  install
