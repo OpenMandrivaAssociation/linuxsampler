@@ -5,7 +5,7 @@
 Name:          linuxsampler
 Summary:       Professional grade software audio sampler
 Version:       1.0.0
-Release:       %mkrel 1
+Release:       %mkrel 2
 License:       GPL
 Group:	       Sound
 Source0:       %{name}-%{version}.tar.bz2
