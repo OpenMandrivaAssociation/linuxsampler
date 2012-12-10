@@ -13,7 +13,7 @@ URL: 	       http://www.linuxsampler.org/
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 BuildRequires: libgig-devel >= 3.3.0
-BuildRequires: libjack-devel
+BuildRequires: jackit-devel
 BuildRequires: dssi-devel
 BuildRequires: sqlite3-devel
 BuildRequires: lv2core-devel
@@ -78,23 +78,21 @@ Development libraries from %name
 %_includedir/%name/plugins/*.h
 %_libdir/pkgconfig/%name.pc
 %_libdir/dssi/*.a
-%_libdir/dssi/*.la
 %_libdir/dssi/*.so
 %_libdir/lv2/linuxsampler.lv2/*.a
-%_libdir/lv2/linuxsampler.lv2/*.la
 %_libdir/lv2/linuxsampler.lv2/*.so
 %_libdir/lv2/linuxsampler.lv2/*.ttl
 %_libdir/%name/liblinuxsampler.a
-%_libdir/%name/liblinuxsampler.la
 %_libdir/%name/liblinuxsampler.so
 
 #--------------------------------------------------------------------
 
 %prep
 %setup -q -n %name-%version
+perl -pi -e "s/append\(element\)/this->append\(element\)/g" src/common/Pool.h
 
 %build
-%configure2_5x
+LDFLAGS="-lpthread -ldl" %configure2_5x
 %make
 
 %install
@@ -113,4 +111,28 @@ subject, that are not yet covered by the FAQ, please contact us.
 EOF
 
 %clean
+
+
+
+%changelog
+* Fri Dec 10 2010 Oden Eriksson <oeriksson@mandriva.com> 1.0.0-2mdv2011.0
++ Revision: 620242
+- the mass rebuild of 2010.0 packages
+
+* Thu Aug 27 2009 Emmanuel Andry <eandry@mandriva.org> 1.0.0-1mdv2010.0
++ Revision: 421786
+- New version 1.0.0
+- new major 3
+- drop arts support
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - rebuild
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+* Sat Dec 15 2007 Nicolas Lécureuil <nlecureuil@mandriva.com> 0.5.1-1mdv2008.1
++ Revision: 120284
+- import linuxsampler
+
 
