@@ -1,116 +1,120 @@
-%define	major	3
-%define	libname	%mklibname %name %major
-%define	develname %mklibname %name -d
+%define	major	5
+%define	libname	%mklibname %{name} %major
+%define	develname %mklibname %{name} -d
 
-Name:          linuxsampler
-Summary:       Professional grade software audio sampler
-Version:       1.0.0
-Release:       3
-License:       GPL
-Group:	       Sound
-Source0:       %{name}-%{version}.tar.bz2
-URL: 	       http://www.linuxsampler.org/
-BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+Name:		linuxsampler
+Summary:	Professional grade software audio sampler
+Version:	2.1.0
+Release:	1
+License:	GPLv2
+Group:		Sound/Midi
+URL:		http://www.linuxsampler.org/
+Source0:	http://download.linuxsampler.org/packages/linuxsampler-%{version}.tar.bz2
+BuildRequires:	pkgconfig(gig)
+BuildRequires:	pkgconfig(jack)
+BuildRequires:	pkgconfig(dssi)
+BuildRequires:	pkgconfig(sqlite3)
+BuildRequires:	pkgconfig(sndfile)
+BuildRequires:	bison
+BuildRequires:	doxygen
+BuildRequires:	pkgconfig(lv2) >= 1.12
+BuildRequires:	perl(XML::Parser)
+BuildRequires:	flex
 
-BuildRequires: libgig-devel >= 3.3.0
-BuildRequires: jackit-devel
-BuildRequires: dssi-devel
-BuildRequires: sqlite3-devel
-BuildRequires: lv2core-devel
-#BuildRequires: arts-devel
+Requires:	jackit
+Requires:	liblscp
+Requires:	gig
+Requires:	lv2
+Requires:	%{libname} = %{version}-%{release}
 
 %description
-LinuxSampler is a professional grade software audio sampler 
-that aims to deliver performance and features at par with 
+LinuxSampler is a professional grade software audio sampler
+that aims to deliver performance and features at par with
 hardware sampler devices
 
 %files
-%defattr(-,root,root)
-%_bindir/linuxsampler
-%_mandir/man1/linuxsampler.1.*
-%_prefix/README.urpmi
-%_localstatedir/lib/%{name}/*.db
-%dir %_libdir/%{name}/plugins
+%doc README.urpmi
+%{_bindir}/%{name}
+%{_bindir}/lscp
+%{_bindir}/ls_instr_script
+%{_mandir}/man1/%{name}.1.*
+%{_mandir}/man1/lscp.1.*
+%{_localstatedir}/lib/%{name}/*.db
+%dir %{_libdir}/%{name}/plugins
 
 #--------------------------------------------------------------------
 
-%package -n	%libname
-Group: 		System/Libraries
-Summary: 	Libraries for %name
-Provides: 	lib%name = %version-%release
+%package -n %{libname}
+Group:		System/Libraries
+Summary:	Libraries for %{name}
+Provides:	lib%{name} = %{version}-%{release}
 
-%description -n %libname
-Librairies from %name
+%description -n %{libname}
+Libraries from %{name}
 
-%if %mdkversion < 200900
-%post -n %libname -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -n %libname -p /sbin/ldconfig
-%endif
-
-%files -n %libname
-%defattr(-,root,root)
-%_libdir/linuxsampler/liblinuxsampler.so.%{major}*
+%files -n %{libname}
+%{_libdir}/%{name}/lib%{name}.so.%{major}{,.*}
+%{_libdir}/lv2/%{name}.lv2/*.ttl
 
 #--------------------------------------------------------------------
 
-%package -n	%develname
-Group: 		Development/Other
-Summary: 	Libraries for %name
-Requires:	%libname = %version-%release
-Provides:	lib%name-devel = %version-%release
-Provides: 	%{name}-devel = %{version}-%{release}
-Obsoletes:	%{_lib}%{name}1-devel
+%package -n %{develname}
+Group:		Development/Other
+Summary:	Libraries for %{name}
+Requires:	%{libname} = %{version}-%{release}
+Provides:	lib%{name}-devel = %{version}-%{release}
+Provides:	%{name}-devel = %{version}-%{release}
+Obsoletes:	%{_lib}%{name}1-devel <= %{version}-%{release}
 
-%description -n	%develname
-Development libraries from %name
+%description -n	%{develname}
+Development libraries from %{name}
 
-%files -n %develname
-%defattr (-,root,root)
-%_includedir/%name/*.h
-%_includedir/%name/common/*.h
-%_includedir/%name/drivers/*.h
-%_includedir/%name/drivers/audio/*.h
-%_includedir/%name/drivers/midi/*.h
-%_includedir/%name/effects/*.h
-%_includedir/%name/engines/*.h
-%_includedir/%name/plugins/*.h
-%_libdir/pkgconfig/%name.pc
-%_libdir/dssi/*.a
-%_libdir/dssi/*.so
-%_libdir/lv2/linuxsampler.lv2/*.a
-%_libdir/lv2/linuxsampler.lv2/*.so
-%_libdir/lv2/linuxsampler.lv2/*.ttl
-%_libdir/%name/liblinuxsampler.a
-%_libdir/%name/liblinuxsampler.so
+%files -n %{develname}
+%{_includedir}/%{name}/*.h
+%{_includedir}/%{name}/common/*.h
+%{_includedir}/%{name}/drivers/*.h
+%{_includedir}/%{name}/drivers/audio/*.h
+%{_includedir}/%{name}/drivers/midi/*.h
+%{_includedir}/%{name}/effects/*.h
+%{_includedir}/%{name}/engines/*.h
+%{_includedir}/%{name}/plugins/*.h
+%{_includedir}/%{name}/scriptvm/ScriptVM.h
+%{_includedir}/%{name}/scriptvm/ScriptVMFactory.h
+%{_includedir}/%{name}/scriptvm/common.h
+%{_libdir}/pkgconfig/%{name}.pc
+#{_libdir}/dssi/*.so
+%{_libdir}/lv2/%{name}.lv2/*.so
+%{_libdir}/%{name}/lib%{name}.so
 
 #--------------------------------------------------------------------
 
 %prep
-%setup -q -n %name-%version
-perl -pi -e "s/append\(element\)/this->append\(element\)/g" src/common/Pool.h
+%setup -q
+
+%autopatch -p1
+[ -f Makefile.cvs ] && make -f Makefile.svn
 
 %build
-LDFLAGS="-lpthread -ldl" %configure2_5x
+%configure2_5x
+[ -f Makefile.svn ] && make parser
 %make
+make docs
 
 %install
-make DESTDIR=%buildroot  install
+%make_install
 
-cat > %buildroot/%_prefix/README.urpmi <<EOF
-
+cat > README.urpmi <<EOF
 WARNING
 -------
 LinuxSampler is licensed under the GNU GPL with the exception that 
 USAGE of the source code, libraries and applications FOR COMMERCIAL 
 HARDWARE OR SOFTWARE PRODUCTS IS NOT ALLOWED  without prior written 
 permission by the LinuxSampler authors. If you have questions on the 
-subject, that are not yet covered by the FAQ, please contact us.
-
+subject, that are not yet covered by the FAQ, please contact us. 
 EOF
 
-%clean
+find %{buildroot} -regex ".*\(a\|la\)$" -delete
+
 
 
 
