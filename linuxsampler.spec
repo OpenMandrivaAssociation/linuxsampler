@@ -15,7 +15,7 @@ BuildRequires:	pkgconfig(jack)
 BuildRequires:	pkgconfig(dssi)
 BuildRequires:	pkgconfig(sqlite3)
 BuildRequires:	pkgconfig(sndfile)
-BuildRequires:	bison-devel-static
+BuildRequires:	bison
 BuildRequires:	doxygen
 BuildRequires:	pkgconfig(lv2) >= 1.12
 BuildRequires:	perl(XML::Parser)
