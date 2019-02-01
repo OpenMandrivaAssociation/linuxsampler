@@ -10,9 +10,6 @@ License:	GPLv2
 Group:		Sound/Midi
 URL:		http://www.linuxsampler.org/
 Source0:	http://download.linuxsampler.org/packages/linuxsampler-%{version}.tar.bz2
-Patch0:		linuxsampler-2.1-mga-arm_RTMath.cpp.patch
-Patch1:		linuxsampler-2.1-mga-arm_atomic.h.patch
-ExcludeArch:	aarch64
 BuildRequires:	pkgconfig(gig)
 BuildRequires:	pkgconfig(jack)
 BuildRequires:	pkgconfig(dssi)
