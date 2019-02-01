@@ -82,7 +82,7 @@ Development libraries from %{name}
 %{_includedir}/%{name}/scriptvm/ScriptVMFactory.h
 %{_includedir}/%{name}/scriptvm/common.h
 %{_libdir}/pkgconfig/%{name}.pc
-%{_libdir}/dssi/*.so
+#{_libdir}/dssi/*.so
 %{_libdir}/lv2/%{name}.lv2/*.so
 %{_libdir}/%{name}/lib%{name}.so
 
