@@ -90,7 +90,7 @@ Development libraries from %{name}
 
 %prep
 %setup -q
-
+export CXXFLAGS="%{optflags} -std=c++17"
 %autopatch -p1
 [ -f Makefile.cvs ] && make -f Makefile.svn
 
