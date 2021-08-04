@@ -1,4 +1,7 @@
-%define	major	5
+%define _disable_ld_no_undefined 1
+%define _disable_lto 1
+
+%define	major	6
 %define	libname	%mklibname %{name} %major
 %define	develname %mklibname %{name} -d
 
@@ -90,7 +93,7 @@ Development libraries from %{name}
 
 %prep
 %setup -q
-
+export CXXFLAGS="%{optflags} -std=c++17"
 %autopatch -p1
 [ -f Makefile.cvs ] && make -f Makefile.svn
 
