@@ -4,7 +4,7 @@
 
 Name:		linuxsampler
 Summary:	Professional grade software audio sampler
-Version:	2.1.1
+Version:	2.2.0
 Release:	1
 License:	GPLv2
 Group:		Sound/Midi
