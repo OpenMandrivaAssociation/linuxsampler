@@ -13,6 +13,7 @@ License:	GPLv2
 Group:		Sound/Midi
 URL:		http://www.linuxsampler.org/
 Source0:	http://download.linuxsampler.org/packages/linuxsampler-%{version}.tar.bz2
+Patch0:   linuxsampler-arm.patch
 BuildRequires:	pkgconfig(gig)
 BuildRequires:	pkgconfig(jack)
 BuildRequires:	pkgconfig(dssi)
