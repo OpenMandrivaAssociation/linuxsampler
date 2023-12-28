@@ -1,0 +1,11 @@
+diff -up linuxsampler-2.2.0/configure.ac.omv~ linuxsampler-2.2.0/configure.ac
+--- linuxsampler-2.2.0/configure.ac.omv~	2023-12-28 17:38:33.203382014 +0100
++++ linuxsampler-2.2.0/configure.ac	2023-12-28 17:38:53.094584524 +0100
+@@ -122,6 +122,7 @@ AC_RUN_IFELSE([AC_LANG_SOURCE([[
+ #define _GNU_SOURCE 1
+ #endif
+ #include <features.h>
++#include <stdlib.h>
+ void main(void) {
+ #if _XOPEN_SOURCE >= 500
+ exit(0); /* UNIX98 compatible */

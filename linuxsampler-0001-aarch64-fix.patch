@@ -1,3 +1,7 @@
+Modified to support RISC-V and other CPUs too
+
+Based on:
+
 From 91b0db65e3c8a0cf051ffbbb608d36ddaeccd117 Mon Sep 17 00:00:00 2001
 From: Yann Collette <ycollette.nospam@free.fr>
 Date: Sat, 8 Oct 2022 15:57:25 +0200
@@ -12,13 +16,11 @@ diff --git a/src/common/RTMath.cpp b/src/common/RTMath.cpp
 index f228c08..bf596e4 100644
 --- a/src/common/RTMath.cpp
 +++ b/src/common/RTMath.cpp
-@@ -22,6 +22,9 @@
+@@ -22,6 +22,7 @@
   ***************************************************************************/
  
  #include "RTMath.h"
-+#if defined(__aarch64__)
 +#include <time.h>
-+#endif
  
  // for unsafeMicroSeconds() implementation
  #if !defined(WIN32) && !defined(__APPLE__)
@@ -26,7 +28,7 @@ index f228c08..bf596e4 100644
      return t;
      #elif defined(__APPLE__)
      return (time_stamp_t) mach_absolute_time();
-+    #elif defined(__arm__) || defined(__aarch64__)
++    #elif 1
 +    timespec tp;
 +    clock_gettime(CLOCK_MONOTONIC, &tp);
 +    return tp.tv_nsec;
