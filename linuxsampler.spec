@@ -2,7 +2,8 @@
 %define _disable_lto 1
 
 %define	major	6
-%define	libname	%mklibname %{name} %major
+%define	libname	%mklibname %{name}
+%define	oldlibname	%mklibname %{name} 6
 %define	develname %mklibname %{name} -d
 
 Name:		linuxsampler
@@ -13,6 +14,7 @@ License:	GPLv2
 Group:		Sound/Midi
 URL:		http://www.linuxsampler.org/
 Source0:	http://download.linuxsampler.org/packages/linuxsampler-%{version}.tar.bz2
+Patch0:   linuxsampler-0001-aarch64-fix.patch
 BuildRequires:	pkgconfig(gig)
 BuildRequires:	pkgconfig(jack)
 BuildRequires:	pkgconfig(dssi)
@@ -51,6 +53,7 @@ hardware sampler devices
 Group:		System/Libraries
 Summary:	Libraries for %{name}
 Provides:	lib%{name} = %{version}-%{release}
+%rename %{oldlibname}
 
 %description -n %{libname}
 Libraries from %{name}
@@ -98,9 +101,9 @@ export CXXFLAGS="%{optflags} -std=c++17"
 [ -f Makefile.cvs ] && make -f Makefile.svn
 
 %build
-%configure2_5x
+%configure
 [ -f Makefile.svn ] && make parser
-%make
+%make_build
 make docs
 
 %install
