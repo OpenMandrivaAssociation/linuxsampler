@@ -12,8 +12,8 @@ Version:	2.2.0
 Release:	2
 License:	GPLv2
 Group:		Sound/Midi
-URL:		http://www.linuxsampler.org/
-Source0:	http://download.linuxsampler.org/packages/linuxsampler-%{version}.tar.bz2
+URL:		https://www.linuxsampler.org/
+Source0:	https://download.linuxsampler.org/packages/linuxsampler-%{version}.tar.bz2
 Patch0:   linuxsampler-0001-aarch64-fix.patch
 BuildRequires:	pkgconfig(gig)
 BuildRequires:	pkgconfig(jack)
