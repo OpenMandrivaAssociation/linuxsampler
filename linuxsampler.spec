@@ -101,7 +101,7 @@ export CXXFLAGS="%{optflags} -std=c++17"
 [ -f Makefile.cvs ] && make -f Makefile.svn
 
 %build
-%configure
+%configure -HAVE_UNIX98=1
 [ -f Makefile.svn ] && make parser
 %make_build
 make docs
