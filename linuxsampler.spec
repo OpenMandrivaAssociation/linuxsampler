@@ -26,6 +26,7 @@ BuildRequires:	doxygen
 BuildRequires:	pkgconfig(lv2) >= 1.12
 BuildRequires:	perl(XML::Parser)
 BuildRequires:	flex
+BuildRequires:	which
 
 Requires:	jackit
 Requires:	liblscp
