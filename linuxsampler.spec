@@ -8,8 +8,8 @@
 
 Name:		linuxsampler
 Summary:	Professional grade software audio sampler
-Version:	2.2.0
-Release:	2
+Version:	2.3.1
+Release:	1
 License:	GPLv2
 Group:		Sound/Midi
 URL:		https://www.linuxsampler.org/
