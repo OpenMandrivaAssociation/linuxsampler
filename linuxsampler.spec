@@ -1,7 +1,7 @@
 %define _disable_ld_no_undefined 1
 %define _disable_lto 1
 
-%define	major	6
+%define	major	7
 %define	libname	%mklibname %{name}
 %define	oldlibname	%mklibname %{name} 6
 %define	develname %mklibname %{name} -d
