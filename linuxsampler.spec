@@ -16,6 +16,11 @@ Url:		https://www.linuxsampler.org/
 Source0:	https://download.linuxsampler.org/packages/linuxsampler-%{version}.tar.bz2
 #Patch0:	linuxsampler-0001-aarch64-fix.patch
 Patch1:		linuxsampler-2.2.0-compile.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	bison
 BuildRequires:	doxygen
 BuildRequires:	flex
