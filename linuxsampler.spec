@@ -8,14 +8,14 @@
 
 Summary:	Professional grade software audio sampler
 Name:	linuxsampler
-Version:	2.4.0
+Version:	2.4.2
 Release:	1
 License:	GPLv2+
 Group:	Sound/Midi
 Url:		https://www.linuxsampler.org/
 Source0:	https://download.linuxsampler.org/packages/linuxsampler-%{version}.tar.bz2
 #Patch0:	linuxsampler-0001-aarch64-fix.patch
-Patch1:		linuxsampler-2.2.0-compile.patch
+# dropped (no longer applies): Patch1:		linuxsampler-2.2.0-compile.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool-base
