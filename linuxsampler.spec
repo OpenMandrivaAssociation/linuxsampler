@@ -1,33 +1,32 @@
 %global	_disable_ld_no_undefined 1
 %global	_disable_lto 1
 
-%define		major	8
+%define		major	9
 %define		libname	%mklibname %{name}
 %define		oldlibname	%mklibname %{name} 6
 %define		develname %mklibname %{name} -d
 
 Summary:	Professional grade software audio sampler
 Name:	linuxsampler
-Version:	2.4.2
-Release:	1
+Version:		2.5.0
+Release:		1
 License:	GPLv2+
 Group:	Sound/Midi
 Url:		https://www.linuxsampler.org/
 Source0:	https://download.linuxsampler.org/packages/linuxsampler-%{version}.tar.bz2
-#Patch0:	linuxsampler-0001-aarch64-fix.patch
-# dropped (no longer applies): Patch1:		linuxsampler-2.2.0-compile.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool-base
-BuildRequires:	slibtool
-BuildRequires:	make
 BuildRequires:	bison
 BuildRequires:	doxygen
 BuildRequires:	flex
+BuildRequires:	libtool
+BuildRequires:	libtool-base
+BuildRequires:	make
+#BuildRequires:	slibtool
 BuildRequires:	which
 BuildRequires:	perl(XML::Parser)
 BuildRequires:	pkgconfig(dssi)
-BuildRequires:	pkgconfig(gig) >= 4.5.0
+BuildRequires:	pkgconfig(gig) >= 4.6.0
 BuildRequires:	pkgconfig(jack)
 BuildRequires:	pkgconfig(lv2) >= 1.12
 BuildRequires:	pkgconfig(sndfile)
@@ -43,7 +42,7 @@ LinuxSampler is a professional grade software audio sampler that aims to
 deliver performance and features at par with hardware sampler devices.
 
 %files
-%doc README.urpmi NEWS
+%doc README.license ChangeLog NEWS
 %{_bindir}/%{name}
 %{_bindir}/lscp
 %{_bindir}/ls_instr_script
@@ -64,7 +63,7 @@ Provides:	lib%{name} = %{version}-%{release}
 Libraries from %{name}.
 
 %files -n %{libname}
-%{_libdir}/%{name}/lib%{name}.so.%{major}{,.*}
+%{_libdir}/%{name}/lib%{name}.so.%{major}*
 %{_libdir}/lv2/%{name}.lv2/*.ttl
 %{_libdir}/lv2/%{name}.lv2/%{name}.so
 %{_libdir}/dssi/%{name}.so
@@ -107,7 +106,13 @@ export CXXFLAGS="%{optflags} -std=c++17"
 
 
 %build
+# Slibtool won't work with libgig
+ln -sf %{_bindir}/libtoolize slibtoolize
+export PATH=$PWD:$PATH
+export LIBTOOLIZE=%{_bindir}/libtoolize
+export LIBTOOL=%{_bindir}/libtool
 %configure \
+	--enable-rpath \
 	--disable-static \
 	--disable-arts-driver \
 	--disable-artstest \
@@ -124,7 +129,7 @@ make docs
 %install
 %make_install
 
-cat > README.urpmi <<EOF
+cat > README.license <<EOF
 WARNING
 -------
 LinuxSampler is licensed under the GNU GPL with the exception that 
